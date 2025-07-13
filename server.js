@@ -62,6 +62,11 @@ app.post('/admin/verify/:id', (req, res) => {
   }
 });
 
+// Meeting page route (dynamic)
+app.get('/meet/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
 // Socket.IO signaling
 io.on('connection', socket => {
   console.log('User connected:', socket.id);
@@ -86,13 +91,4 @@ io.on('connection', socket => {
 // Start server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-📦 package.json
-
-Run this to create the package.json automatically:
-
-npm init -y
-npm install express socket.io multer body-parser
-
 
