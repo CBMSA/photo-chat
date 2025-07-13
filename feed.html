@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Feed - Photo Chat</title>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body class="centered">
+  <h2>Media Feed</h2>
+  <div id="feed"></div>
+  <script>
+    const storage = firebase.storage();
+    const listRef = storage.ref().child("uploads");
+    listRef.listAll().then(res => {
+      res.items.forEach(item => {
+        item.getDownloadURL().then(url => {
+          const isVideo = url.includes(".mp4") || url.includes("video");
+          const element = document.createElement(isVideo ? "video" : "img");
+          element.src = url;
+          element.controls = true;
+          element.style.width = "300px";
+          element.style.display = "block";
+          element.style.margin = "10px auto";
+          document.getElementById("feed").appendChild(element);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

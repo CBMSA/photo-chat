@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload - Photo Chat</title>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body class="centered">
+  <h2>Upload Photo/Video</h2>
+  <input type="file" id="file" accept="image/*,video/*"/>
+  <button onclick="upload()">Upload</button>
+  <script>
+    const storage = firebase.storage();
+    function upload() {
+      const file = document.getElementById("file").files[0];
+      const ref = storage.ref().child("uploads/" + file.name);
+      ref.put(file).then(() => alert("Uploaded!"));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - Photo Chat</title>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body class="centered">
+  <h2>Login to Photo Chat</h2>
+  <input type="email" id="email" placeholder="Email"><br/>
+  <input type="password" id="password" placeholder="Password"><br/>
+  <button onclick="login()">Login</button>
+  <button onclick="signup()">Sign Up</button>
+  <script>
+    const auth = firebase.auth();
+    function login() {
+      auth.signInWithEmailAndPassword(
+        document.getElementById('email').value,
+        document.getElementById('password').value
+      ).then(() => location.href = 'feed.html').catch(alert);
+    }
+    function signup() {
+      auth.createUserWithEmailAndPassword(
+        document.getElementById('email').value,
+        document.getElementById('password').value
+      ).then(() => location.href = 'feed.html').catch(alert);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  padding: 2rem;
+  text-align: center;
+}
+.centered {
+  max-width: 600px;
+  margin: auto;
+}
+.btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.btn.dark { background: #000; }
+.btn.light { background: #888; }
+footer {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: #777;
+}
