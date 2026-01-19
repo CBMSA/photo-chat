@@ -1,146 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SadiCoin Moments</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PhotoChat</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.min.js"></script>
-<script src="https://unpkg.com/@walletconnect/ethereum-provider/dist/index.umd.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
-body { background:#f4f4f4; }
-.moment { border-radius:12px; margin-bottom:20px; }
-.moment img { width:100%; border-radius:12px 12px 0 0; }
-.chat-box { height:180px; overflow:auto; background:#fff; padding:10px; }
+body {
+  margin: 0;
+  background: #fafafa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+/* HEADER */
+header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+header h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+header .icons {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+  font-size: 1.3rem;
+}
+
+/* FEED */
+.feed {
+  max-width: 600px;
+  margin: auto;
+  padding-bottom: 90px;
+}
+
+/* STORY BAR */
+.stories {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  overflow-x: auto;
+}
+.story {
+  width: 64px;
+  text-align: center;
+}
+.story img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #ff3d00;
+}
+
+/* POST */
+.post {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 12px;
+}
+.post-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.post-header img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.post img.post-img {
+  width: 100%;
+  display: block;
+}
+.post-actions {
+  display: flex;
+  gap: 16px;
+  padding: 10px;
+  font-size: 1.4rem;
+}
+.post-caption {
+  padding: 0 10px 10px;
+  font-size: 0.9rem;
+}
+
+/* FLOAT BUTTON */
+.fab {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: #ff3d00;
+  color: white;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* BOTTOM NAV */
+nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  font-size: 1.4rem;
+}
 </style>
 </head>
 
-<body class="container py-3">
+<body>
 
-<h4>📸 SadiCoin Moments</h4>
-<small id="uid"></small>
+<header>
+  <h1>PhotoChat</h1>
+  <div class="icons">
+    <i class="bi bi-heart"></i>
+    <i class="bi bi-chat"></i>
+    <i class="bi bi-person-circle"></i>
+  </div>
+</header>
 
-<div class="mb-3">
-<input type="file" class="form-control" id="imageInput">
-<button class="btn btn-primary w-100 mt-2" onclick="uploadMoment()">Post Moment</button>
+<div class="feed">
+
+  <!-- STORIES -->
+  <div class="stories">
+    <div class="story"><img src="https://i.pravatar.cc/64?1"><small>You</small></div>
+    <div class="story"><img src="https://i.pravatar.cc/64?2"><small>Ada</small></div>
+    <div class="story"><img src="https://i.pravatar.cc/64?3"><small>Sam</small></div>
+  </div>
+
+  <!-- POST -->
+  <div class="post">
+    <div class="post-header">
+      <img src="https://i.pravatar.cc/36?4">
+      <strong>anonymous_23</strong>
+    </div>
+    <img src="https://picsum.photos/600/500?1" class="post-img">
+    <div class="post-actions">
+      ❤️ 💬 💰
+    </div>
+    <div class="post-caption">
+      <strong>anonymous_23</strong> Supporting wildlife 📸  
+      <br><small>💰 12.4 SDC donated</small>
+    </div>
+  </div>
+
+  <!-- POST -->
+  <div class="post">
+    <div class="post-header">
+      <img src="https://i.pravatar.cc/36?5">
+      <strong>creator_88</strong>
+    </div>
+    <img src="https://picsum.photos/600/500?2" class="post-img">
+    <div class="post-actions">
+      ❤️ 💬 💰
+    </div>
+    <div class="post-caption">
+      <strong>creator_88</strong> City vibes 🌃  
+      <br><small>💰 4.8 SDC donated</small>
+    </div>
+  </div>
+
 </div>
 
-<div id="feed"></div>
+<div class="fab">+</div>
 
-<hr>
-
-<h5>💬 Pay-to-DM (1 SDC)</h5>
-<div class="chat-box" id="chat"></div>
-<input id="dm" class="form-control mt-2" placeholder="Encrypted message">
-<button class="btn btn-success w-100 mt-2" onclick="sendDM()">Send DM</button>
-
-<script>
-/* ================= CONFIG ================= */
-const SUPABASE_URL = "https://jbhhfzbhcvzxtthhmfhz.supabase.co";
-const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const SDC_CONTRACT = "0x3e6dB8977261B30Ea3Cc0408867912E8B6CeDC96";
-const ABI = ["function transfer(address,uint amount)"];
-
-/* ================= USER ================= */
-let uid = localStorage.getItem("uid");
-if(!uid){ uid = crypto.randomUUID(); localStorage.setItem("uid",uid); }
-document.getElementById("uid").innerText = "User: " + uid;
-
-/* ================= WALLET (WC + MetaMask) ================= */
-let provider, signer;
-
-async function connectWallet(){
-  if(window.ethereum){
-    provider = new ethers.BrowserProvider(window.ethereum);
-  } else {
-    provider = new ethers.BrowserProvider(
-      await EthereumProvider.init({
-        projectId: "demo",
-        chains: [137],
-        showQrModal: true
-      })
-    );
-  }
-  signer = await provider.getSigner();
-}
-
-/* ================= IMAGE UPLOAD ================= */
-async function uploadMoment(){
-  const file = document.getElementById("imageInput").files[0];
-  if(!file) return alert("Select image");
-
-  const path = uid + "/" + Date.now() + ".jpg";
-  await supabase.storage.from("moments").upload(path,file);
-
-  const url = supabase.storage.from("moments").getPublicUrl(path).data.publicUrl;
-
-  await supabase.from("moments").insert({
-    user_id: uid,
-    image_url: url,
-    likes:0,
-    sdc_volume:0
-  });
-
-  loadMoments();
-}
-
-/* ================= LOAD FEED ================= */
-async function loadMoments(){
-  const { data } = await supabase.from("moments").select("*").order("created_at",{ascending:false});
-  const feed = document.getElementById("feed");
-  feed.innerHTML="";
-  data.forEach(m=>{
-    feed.innerHTML+=`
-    <div class="card moment">
-      <img src="${m.image_url}">
-      <div class="card-body">
-        <b>${m.user_id}</b><br>
-        💎 ${m.sdc_volume} SDC
-        <button class="btn btn-sm btn-success float-end" onclick="tip('${m.user_id}','${m.id}')">Tip 1 SDC</button>
-      </div>
-    </div>`;
-  });
-}
-
-/* ================= TIP ================= */
-async function tip(to,id){
-  await connectWallet();
-  const c = new ethers.Contract(SDC_CONTRACT,ABI,signer);
-  await c.transfer(to, ethers.parseUnits("1",18));
-
-  await supabase.from("tips").insert({
-    from_user:uid,
-    to_user:to,
-    amount:1
-  });
-
-  loadMoments();
-}
-
-/* ================= ENCRYPTED DM ================= */
-function encrypt(msg){
-  return btoa(msg);
-}
-
-async function sendDM(){
-  await connectWallet();
-  const msg = document.getElementById("dm").value;
-  if(!msg) return;
-
-  const c = new ethers.Contract(SDC_CONTRACT,ABI,signer);
-  await c.transfer("0x000000000000000000000000000000000000dead", ethers.parseUnits("1",18));
-
-  document.getElementById("chat").innerHTML += `<div>${encrypt(msg)}</div>`;
-  document.getElementById("dm").value="";
-}
-
-loadMoments();
-</script>
+<nav>
+  🏠 🔍 ➕ 💬 👤
+</nav>
 
 </body>
 </html>
